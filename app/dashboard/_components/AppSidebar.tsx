@@ -44,10 +44,10 @@ const MenuOptions = [
 
 export function AppSidebar() {
     const { userDetail } = useContext(UserDetailContext);
-    const { open } = useSidebar();
+    const { open, isMobile } = useSidebar();
 
     return (
-        <Sidebar className="border-r border-white/5 bg-black/70 backdrop-blur-md">
+        <Sidebar collapsible={isMobile ? "offcanvas" : "none"} className="border-r border-white/5 bg-black/70 backdrop-blur-md md:h-svh md:sticky md:top-0">
             <SidebarHeader>
                 <Link href="/" className="flex items-center gap-4 p-5 group cursor-pointer hover:opacity-80 transition-opacity">
                     <div className="bg-primary/10 border border-primary/20 p-2.5 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.1)] group-hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-shadow">

@@ -7,15 +7,15 @@ function AppHeader() {
     return (
         <header className="sticky top-0 z-40 flex justify-between items-center w-full px-6 h-20 border-b border-white/5 bg-black/70 backdrop-blur-md">
             <div className="flex items-center gap-4 h-full">
-                <SidebarTrigger className="h-8 w-8 text-gray-400 hover:text-primary transition-colors" />
+                <SidebarTrigger className="h-8 w-8 text-gray-400 hover:text-primary transition-colors md:hidden" />
 
-                <div className="h-8 w-px bg-white/10 mx-2 hidden sm:block" />
+                <div className="h-8 w-px bg-white/10 mx-2 hidden sm:block md:hidden" />
                 <Link href="/" className="flex items-center group h-full">
-                    <div className="flex items-center gap-0 tracking-tighter transition-all hover:opacity-90">
-                        <div className="text-2xl font-black flex items-center">
-                            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-cyan-400 dark:from-blue-400 dark:to-cyan-300 drop-shadow-[0_0_10px_rgba(59,130,246,0.2)]">Logic</span>
-                            <span className="text-accent mx-0.5 transform group-hover:rotate-12 transition-transform duration-300">2</span>
-                            <span className="bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-blue-600 dark:from-cyan-300 dark:to-blue-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">Agent</span>
+                    <div className="flex items-center gap-0 tracking-tighter transition-all duration-500 ease-out group-hover:drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                        <div className="text-3xl font-black flex items-center leading-tight py-2">
+                            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-cyan-400 to-blue-500 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-400 drop-shadow-sm transition-transform duration-500 group-hover:scale-105 py-1">Logic</span>
+                            <span className="text-4xl sm:text-5xl text-accent mx-1 transform transition-all duration-500 group-hover:scale-125 group-hover:rotate-360 group-hover:drop-shadow-[0_0_10px_rgba(234,179,8,0.5)] flex items-center justify-center">2</span>
+                            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-500 via-cyan-400 to-blue-600 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-500 drop-shadow-sm transition-transform duration-500 group-hover:scale-105 py-1">Agent</span>
                         </div>
                     </div>
                 </Link>

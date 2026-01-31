@@ -26,11 +26,11 @@ export default function Navbar() {
         >
             <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between h-full">
                 <Link href="/" className="flex items-center group p-0 m-0 h-full">
-                    <div className="flex items-center tracking-tighter transition-all hover:opacity-90">
-                        <div className="text-2xl font-black flex items-center">
-                            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-cyan-400 dark:from-blue-400 dark:to-cyan-300 drop-shadow-[0_0_10px_rgba(59,130,246,0.2)]">Logic</span>
-                            <span className="text-accent mx-0.5 transform group-hover:rotate-12 transition-transform duration-300">2</span>
-                            <span className="bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-blue-600 dark:from-cyan-300 dark:to-blue-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">Agent</span>
+                    <div className="flex items-center tracking-tighter transition-all duration-500 ease-out group-hover:drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                        <div className="text-3xl font-black flex items-center leading-tight py-2">
+                            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-600 via-cyan-400 to-blue-500 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-400 drop-shadow-sm transition-transform duration-500 group-hover:scale-105 py-1">Logic</span>
+                            <span className="text-4xl sm:text-5xl text-accent mx-1 transform transition-all duration-500 group-hover:scale-125 group-hover:rotate-360 group-hover:drop-shadow-[0_0_10px_rgba(234,179,8,0.5)] flex items-center justify-center">2</span>
+                            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-500 via-cyan-400 to-blue-600 dark:from-blue-400 dark:via-cyan-300 dark:to-blue-500 drop-shadow-sm transition-transform duration-500 group-hover:scale-105 py-1">Agent</span>
                         </div>
                     </div>
                 </Link>
