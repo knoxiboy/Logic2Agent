@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
@@ -27,19 +26,11 @@ export default function Navbar() {
         >
             <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between h-full">
                 <Link href="/" className="flex items-center group p-0 m-0 h-full">
-                    <div className="flex items-center">
-                        <Image
-                            src="/hero.png"
-                            alt="Logic2Agent Logo"
-                            width={80}
-                            height={24}
-                            className="object-contain transition-transform group-hover:scale-105"
-                            priority
-                        />
-                        <div className="text-xl font-bold flex items-center -ml-1">
-                            <span className="text-blue-500 dark:text-blue-400">Logic</span>
-                            <span className="text-yellow-500">2</span>
-                            <span className="text-blue-500 dark:text-blue-400">Agent</span>
+                    <div className="flex items-center tracking-tighter transition-all hover:opacity-90">
+                        <div className="text-2xl font-black flex items-center">
+                            <span className="bg-clip-text text-transparent bg-linear-to-r from-blue-600 to-cyan-400 dark:from-blue-400 dark:to-cyan-300 drop-shadow-[0_0_10px_rgba(59,130,246,0.2)]">Logic</span>
+                            <span className="text-accent mx-0.5 transform group-hover:rotate-12 transition-transform duration-300">2</span>
+                            <span className="bg-clip-text text-transparent bg-linear-to-r from-cyan-400 to-blue-600 dark:from-cyan-300 dark:to-blue-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">Agent</span>
                         </div>
                     </div>
                 </Link>
