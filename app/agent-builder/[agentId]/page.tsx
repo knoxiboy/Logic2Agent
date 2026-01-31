@@ -75,11 +75,23 @@ function AgentBuilderContent() {
     }, []);
 
 
-    // useEffect(() => {
-    //     if (isMounted && agentData?._id) {
-    //         SaveNodesAndEdges();
-    //     }
-    // }, [nodes, edges, agentData]);
+    useEffect(() => {
+        if (agentData) {
+            console.log("Hydrating Flow Data from DB:", agentData);
+            if (agentData.nodes) {
+                const hydratedNodes = agentData.nodes.map((node: any) => ({
+                    ...node,
+                    data: {
+                        ...node.data,
+                        name: node.data.name || agentData.name // Default to agent name if missing
+                    }
+                }));
+                setNodes(hydratedNodes);
+            }
+            // Specifically check if edges exist in DB (even if empty array) to avoid overwriting with initialEdges if DB has saved data
+            if (agentData.edges !== undefined) setEdges(agentData.edges);
+        }
+    }, [agentData]);
 
 
     const SaveNodesAndEdges = async () => {
@@ -92,6 +104,7 @@ function AgentBuilderContent() {
                 edges,
             });
             toast.success("Flow saved successfully!");
+            console.log("Saved Nodes:", nodes.length, "Edges:", edges.length);
             console.log(result);
         } catch (error) {
             toast.error("Failed to save flow");
@@ -161,12 +174,15 @@ function AgentBuilderContent() {
                 id: `${type}-${Date.now()}`,
                 type,
                 position,
-                data: { label: `${type} node` },
+                data: {
+                    label: `${type} node`,
+                    name: agentData?.name // Default new node name to agent name
+                },
             };
 
             setNodes((nds) => nds.concat(newNode));
         },
-        [screenToFlowPosition, setNodes]
+        [screenToFlowPosition, setNodes, agentData] // Added agentData dependency
     );
 
     return (
@@ -210,7 +226,7 @@ function AgentBuilderContent() {
                             <p className="text-gray-500 font-medium">Loading workspace...</p>
                         </div>
                     )}
-                    <SettingPannel selectedNode={selectedNode} setNodes={setNodes} onSave={SaveNodesAndEdges} />
+                    <SettingPannel selectedNode={selectedNode} setNodes={setNodes} onSave={SaveNodesAndEdges} agentName={agentData?.name} />
                 </div>
             </div>
         </div >
