@@ -32,14 +32,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - React 19
 - Tailwind CSS with custom theming
 - TypeScript
-- NeuralFlow API
-
-## Learn More
-
-To learn more about NeuralFlow capabilities, take a look at the following resources:
-
-- [NeuralFlow Documentation](https://docs.neuralflow.ai) - comprehensive guides and API references
-- [Agent Building Tutorials](https://neuralflow.ai/tutorials) - interactive learning materials
+- Logic2Agent API
 
 ## Contributing
 
