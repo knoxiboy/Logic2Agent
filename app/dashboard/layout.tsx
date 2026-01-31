@@ -16,6 +16,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
                     {children}
                 </main>
                 <AppFooter />
+
             </SidebarInset>
         </DashboardProvider>
     )

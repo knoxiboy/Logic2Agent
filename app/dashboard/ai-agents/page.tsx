@@ -1,12 +1,9 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import React, { useContext, useEffect, useState } from 'react'
-import MyAgents from './MyAgents'
-import { UserDetailContext } from '@/context/UserDetailContext';
-import { useConvex, useMutation } from 'convex/react';
-import { api } from '@/convex/_generated/api';
+import MyAgents from '../_components/MyAgents'
+import { useEffect, useState } from 'react'
 
-function AiAgentTab() {
+function AiAgentsPage() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -20,13 +17,13 @@ function AiAgentTab() {
             <Tabs defaultValue="myagent" className="w-full">
                 <TabsList>
                     <TabsTrigger value="myagent">My Agents</TabsTrigger>
-                    <TabsTrigger value="template">Templates</TabsTrigger>
+
                 </TabsList>
                 <TabsContent value="myagent"><MyAgents /></TabsContent>
-                <TabsContent value="template">Templates</TabsContent>
+
             </Tabs>
         </div>
     )
 }
 
-export default AiAgentTab
+export default AiAgentsPage
