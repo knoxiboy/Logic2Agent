@@ -52,7 +52,11 @@ export function AppSidebar() {
                     <div className="bg-primary/10 border border-primary/20 p-2.5 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.1)]">
                         <Home className="text-primary h-6 w-6" />
                     </div>
-                    <span className={`font-black tracking-tight ${open ? 'text-2xl' : 'hidden'} transition-all duration-200 ease-in-out text-white hover:text-primary cursor-default`}>Logic2Agent</span>
+                    <span className={`font-black tracking-tight ${open ? 'text-2xl' : 'hidden'} transition-all duration-200 ease-in-out cursor-default`}>
+                        <span className="text-blue-600">Logic</span>
+                        <span className="text-yellow-500">2</span>
+                        <span className="text-blue-600">Agent</span>
+                    </span>
                 </div>
             </SidebarHeader>
             <SidebarContent className="mt-4 px-2">
@@ -74,14 +78,7 @@ export function AppSidebar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-<<<<<<< HEAD
-            <SidebarFooter className="mb-8 mt-auto">
-                <div className="flex flex-col gap-5">
-                    <div className="flex items-center gap-3">
-                        <Gem className="h-6 w-6" />
-                        {open && <h2 className="text-lg">Remaining Credits: <span className="font-bold">{userDetail?.token}</span></h2>}
-=======
-            <SidebarFooter className="p-6 mb-4">
+            <SidebarFooter className="p-6 mb-4 mt-auto">
                 <div className="flex flex-col gap-6">
                     <div className="flex items-center gap-3 px-2">
                         <div className="bg-accent/10 border border-accent/20 p-2 rounded-lg">
@@ -93,7 +90,6 @@ export function AppSidebar() {
                                 <p className="text-xl font-black text-white">{userDetail?.token}</p>
                             </div>
                         )}
->>>>>>> 2178be55ee9e2fd6c5bf5617fa0cdb0c6c296d3d
                     </div>
                     {open && (
                         <Button className="w-full py-6 text-base font-bold rounded-2xl bg-primary hover:bg-primary/90 text-white transition-all shadow-[0_10px_30px_rgba(6,182,212,0.2)] hover:shadow-primary/40 active:scale-95">

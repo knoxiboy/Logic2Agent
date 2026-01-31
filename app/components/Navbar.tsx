@@ -47,7 +47,7 @@ export default function Navbar() {
                         </Link>
                     </SignedOut>
                     <SignedIn>
-                        ne
+
                         <UserButton
                             afterSignOutUrl="/"
                             appearance={{

@@ -10,11 +10,11 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
         <DashboardProvider>
             <div className="flex min-h-screen w-full">
                 <AppSidebar />
-                <main className="w-full flex flex-col relative overflow-hidden">
+                <main className="w-full h-screen flex flex-col relative overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent blur-3xl" />
-                    <SidebarInset>
+                    <SidebarInset className="h-full flex flex-col overflow-hidden bg-transparent">
                         <AppHeader />
-                        <main className="p-0">
+                        <main className="flex-1 overflow-y-auto p-0">
                             {children}
                         </main>
                         <AppFooter />
