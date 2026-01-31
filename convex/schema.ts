@@ -14,5 +14,6 @@ export default defineSchema({
         name: v.string(),
         config: v.optional(v.any()),
         published: v.boolean(),
+        userId: v.id("UserTable"),
     })
 });

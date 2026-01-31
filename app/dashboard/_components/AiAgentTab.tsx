@@ -1,11 +1,28 @@
+"use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MyAgents from './MyAgents'
+import { UserDetailContext } from '@/context/UserDetailContext';
+import { useConvex, useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 function AiAgentTab() {
+    const { userDetail } = useContext(UserDetailContext);
+    const [agentList, setAgentList] = useState([]);
+    const convex = useConvex();
+
+    useEffect(() => {
+        GetUserAgents();
+    }, [userDetail]);
+
+    const GetUserAgents = async () => {
+        if (!userDetail?._id) return;
+        const result = await convex.query(api.agent.getAgentList, { userId: userDetail?._id });
+        console.log(result);
+    }
     return (
         <div className='px-10 md:px-24 lg:px-32 mt-10'>
-            <Tabs defaultValue="myagent" className="w-[400px]">
+            <Tabs defaultValue="myagent" className="w-full">
                 <TabsList>
                     <TabsTrigger value="myagent">My Agents</TabsTrigger>
                     <TabsTrigger value="template">Templates</TabsTrigger>

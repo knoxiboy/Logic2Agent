@@ -1,8 +1,10 @@
 "use client";
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
-import React from 'react'
-
+import { Loader2, Plus } from 'lucide-react'
+import React, { useContext } from 'react'
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/navigation';
 import {
     Dialog,
     DialogContent,
@@ -14,9 +16,39 @@ import {
     DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from '@/components/ui/input';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { UserDetailContext } from '@/context/UserDetailContext';
+
+
+
+
+
+
 
 function CreateAgentSection() {
+    const router = useRouter();
     const [openDialog, setOpenDialog] = React.useState(false);
+    const createAgentMutation = useMutation(api.agent.createAgent);
+
+    const [agentName, setAgentName] = useState<string>();
+
+    const [loader, setLoader] = useState(false);
+    const { userDetail, setUserDetail } = useContext(UserDetailContext);
+
+    const createAgent = async () => {
+        const agentId = uuidv4();
+        setLoader(true);
+        await createAgentMutation({
+            name: agentName ?? ' ',
+            agentId: agentId,
+            userId: userDetail?._id,
+        });
+        setOpenDialog(false);
+        setLoader(false);
+        router.push(`/agent-builder/${agentId}`);
+    }
+
     return (
         <div className='flex flex-col items-center justify-center p-8 text-center'>
             <h2 className='font-bold text-3xl mb-2 text-white'>Create AI Agent</h2>
@@ -32,14 +64,16 @@ function CreateAgentSection() {
                     <DialogHeader>
                         <DialogTitle>Enter Agent Name</DialogTitle>
                         <DialogDescription>
-                            <Input placeholder='Agent Name' />
+                            <Input placeholder='Agent Name' onChange={(e) => setAgentName(e.target.value)} />
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <DialogClose asChild>
                             <Button variant="ghost">Cancel</Button>
                         </DialogClose>
-                        <Button className="bg-blue-600 hover:bg-blue-700 text-white">Create</Button>
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={createAgent} disabled={loader}>
+                            {loader && <Loader2 className="animate-spin" />}
+                            Create</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
