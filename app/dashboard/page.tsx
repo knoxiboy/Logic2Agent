@@ -1,71 +1,82 @@
-import { UserButton } from '@clerk/nextjs';
-import { currentUser } from '@clerk/nextjs/server';
+import React from 'react'
 
-export default async function DashboardPage() {
-    const user = await currentUser();
-
+function Dashboard() {
     return (
-        <div className="min-h-screen bg-black text-white mt-25">
-            <div className="max-w-7xl mx-auto px-6 py-12">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-12">
-                    <div>
-                        <h1 className="text-4xl font-bold mb-2">
-                            Welcome back, {user?.firstName || 'User'}! 👋
-                        </h1>
-                        <p className="text-gray-400">
-                            Ready to build some amazing agents?
-                        </p>
-                    </div>
+        <div className="relative min-h-screen overflow-hidden bg-background text-foreground pt-4">
+            {/* Background Decor */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent blur-[120px] opacity-60" />
 
+            <div className="p-8 max-w-7xl mx-auto w-full relative z-10">
+                <div className="mb-12 animate-fade-in text-center lg:text-left">
+                    <div className="inline-flex items-center space-x-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-xs font-bold uppercase tracking-widest mb-4">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary shadow-[0_0_8px_rgba(59,130,246,0.5)]"></span>
+                        </span>
+                        <span>Logic2Agent Control Center</span>
+                    </div>
+                    <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-white">
+                        System <span className="text-primary italic drop-shadow-[0_0_20px_rgba(6,182,212,0.2)]">Overview</span>
+                    </h1>
+                    <p className="text-gray-400 text-lg font-light max-w-2xl leading-relaxed">
+                        Orchestrating autonomous intelligence across your neural network. Monitor performance, manage agents, and scale your data flows.
+                    </p>
                 </div>
 
-                {/* Dashboard Content */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Card 1 */}
-                    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-green-600 transition-all">
-                        <div className="w-12 h-12 bg-green-600/20 rounded-xl flex items-center justify-center mb-4">
-                            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                            </svg>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    {[
+                        { title: "AI Agents", value: "5", label: "Active Nodes", color: "primary" },
+                        { title: "Data Sources", value: "12", label: "Linked Streams", color: "secondary" },
+                        { title: "Tasks", value: "24", label: "Executions Today", color: "white" },
+                        { title: "Credits", value: "1,250", label: "Neural Units", color: "accent" }
+                    ].map((stat, idx) => (
+                        <div key={idx} className="bg-white/5 backdrop-blur-2xl rounded-3xl p-7 border border-white/5 hover:border-primary/30 transition-all hover:shadow-[0_0_40px_rgba(6,182,212,0.1)] group">
+                            <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">{stat.title}</h3>
+                            <p className={`text-4xl font-black mt-4 text-${stat.color} group-hover:scale-105 transition-transform duration-500`}>{stat.value}</p>
+                            <div className="flex items-center justify-between mt-4">
+                                <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
+                                <div className={`h-1.5 w-1.5 rounded-full bg-${stat.color} animate-pulse shadow-[0_0_8px_currentColor] opacity-50`} />
+                            </div>
                         </div>
-                        <h3 className="text-xl font-semibold mb-2">Create New Agent</h3>
-                        <p className="text-gray-400 text-sm">Start building your logic-driven agent from scratch</p>
-                    </div>
-
-                    {/* Card 2 */}
-                    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-green-600 transition-all">
-                        <div className="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center mb-4">
-                            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                        </div>
-                        <h3 className="text-xl font-semibold mb-2">My Agents</h3>
-                        <p className="text-gray-400 text-sm">View and manage your existing agents</p>
-                    </div>
-
-                    {/* Card 3 */}
-                    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-green-600 transition-all">
-                        <div className="w-12 h-12 bg-purple-600/20 rounded-xl flex items-center justify-center mb-4">
-                            <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                        </div>
-                        <h3 className="text-xl font-semibold mb-2">Analytics</h3>
-                        <p className="text-gray-400 text-sm">Track performance and usage metrics</p>
-                    </div>
+                    ))}
                 </div>
 
-                {/* User Info */}
-                <div className="mt-12 bg-gray-900 border border-gray-800 rounded-2xl p-6">
-                    <h2 className="text-2xl font-bold mb-4">Account Information</h2>
-                    <div className="space-y-2 text-gray-400">
-                        <p><span className="text-white font-medium">Email:</span> {user?.emailAddresses[0]?.emailAddress}</p>
-                        <p><span className="text-white font-medium">User ID:</span> {user?.id}</p>
-                        <p><span className="text-white font-medium">Joined:</span> {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</p>
+                <div className="bg-white/5 backdrop-blur-2xl rounded-[3rem] p-10 border border-white/5 shadow-2xl mb-8">
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center gap-3">
+                            <div className="h-8 w-1 bg-primary rounded-full shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
+                            <h2 className="text-3xl font-black text-white tracking-tight">Recent Activity</h2>
+                        </div>
+                        <button className="text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:text-white transition-all px-6 py-2.5 rounded-2xl bg-primary/10 border border-primary/20 hover:bg-primary hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] active:scale-95">View All</button>
+                    </div>
+                    <div className="space-y-8">
+                        {[
+                            { title: "Agent Deployment", desc: 'New "Market Analyzer" node initialized', time: "12m ago", variant: "primary" },
+                            { title: "Network Sync", desc: "Data streams aggregated successfully", time: "2h ago", variant: "secondary" },
+                            { title: "System Boost", desc: "Response latency reduced by 14ms", time: "Yesterday", variant: "accent" }
+                        ].map((activity, idx) => (
+                            <div key={idx} className="flex items-start group">
+                                <div className={`bg-${activity.variant}/10 border border-${activity.variant}/20 p-4 rounded-2xl mr-6 group-hover:scale-110 transition-all duration-500 shadow-xl`}>
+                                    <div className={`h-2.5 w-2.5 rounded-full bg-${activity.variant} animate-pulse shadow-[0_0_10px_currentColor]`} />
+                                </div>
+                                <div className="flex-1 border-b border-white/5 pb-8 group-last:border-0 group-last:pb-0">
+                                    <h3 className="font-bold text-xl text-white mb-2 group-hover:text-primary transition-colors">{activity.title}</h3>
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-gray-400 text-sm font-light leading-relaxed">{activity.desc}</p>
+                                        <span className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">{activity.time}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
+
+            {/* Decorative elements */}
+            <div className="absolute -top-20 -right-20 w-80 h-80 bg-primary/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
+            <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-secondary/5 rounded-full blur-[140px] animate-pulse pointer-events-none" />
         </div>
     );
 }
+
+export default Dashboard
