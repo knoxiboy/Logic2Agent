@@ -5,9 +5,10 @@ import { Cloud } from 'lucide-react'
 
 interface ApiNodeProps {
     selected?: boolean;
+    data?: any;
 }
 
-function ApiNode({ selected }: ApiNodeProps) {
+function ApiNode({ selected, data }: ApiNodeProps) {
     return (
         <div className={`flex items-center gap-3 bg-white dark:bg-gray-900 border-2 rounded-xl p-4 shadow-sm min-w-[150px] relative transition-all hover:shadow-md ${selected ? 'border-cyan-500 shadow-cyan-500/20' : 'border-cyan-500'}`}>
             <Handle
@@ -20,7 +21,7 @@ function ApiNode({ selected }: ApiNodeProps) {
             </div>
             <div>
                 <p className='text-xs text-gray-500 font-medium uppercase tracking-wider'>Integration</p>
-                <h2 className='text-lg font-bold'>API Call</h2>
+                <h2 className='text-lg font-bold'>{data?.name || "API Call"}</h2>
             </div>
             <Handle
                 type="source"

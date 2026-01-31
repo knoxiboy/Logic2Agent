@@ -9,17 +9,23 @@ interface SettingPannelProps {
     selectedNode: any;
     setNodes: any;
     onSave: () => void;
+    agentName?: string;
 }
 
-function SettingPannel({ selectedNode, setNodes, onSave }: SettingPannelProps) {
+function SettingPannel({ selectedNode, setNodes, onSave, agentName }: SettingPannelProps) {
     const [inputs, setInputs] = useState<any>({});
 
     useEffect(() => {
         console.log("SettingPannel Received Node:", selectedNode);
         if (selectedNode) {
-            setInputs(selectedNode.data);
+            const initialData = { ...selectedNode.data };
+            // Default name to agentName if not present
+            if (!initialData.name && agentName) {
+                initialData.name = agentName;
+            }
+            setInputs(initialData);
         }
-    }, [selectedNode]);
+    }, [selectedNode, agentName]);
 
     const handleInputChange = (key: string, value: any) => {
         const newInputs = { ...inputs, [key]: value };
@@ -74,8 +80,150 @@ function SettingPannel({ selectedNode, setNodes, onSave }: SettingPannelProps) {
                         </div>
                     )}
 
-                    {/* Common Settings: Name & Instructions - HIDE for EndNode based on strict design request */}
-                    {selectedNode.type !== 'EndNode' && (
+                    {/* IfElseNode Specific Settings */}
+                    {selectedNode.type === 'IfElseNode' && (
+                        <div className='space-y-4'>
+                            <p className='text-sm text-gray-500'>Create conditions to branch your workflow</p>
+
+                            <div className='space-y-2'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>If</label>
+                                <input
+                                    type="text"
+                                    className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm'
+                                    value={inputs.condition || ''}
+                                    onChange={(e) => handleInputChange('condition', e.target.value)}
+                                    placeholder="Enter condition e.g output=='any condition'"
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* WhileNode Specific Settings */}
+                    {selectedNode.type === 'WhileNode' && (
+                        <div className='space-y-4'>
+                            <p className='text-sm text-gray-500'>Loop your logic</p>
+
+                            <div className='space-y-2'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>while</label>
+                                <input
+                                    type="text"
+                                    className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm'
+                                    value={inputs.condition || ''}
+                                    onChange={(e) => handleInputChange('condition', e.target.value)}
+                                    placeholder="Enter condition e.g output=='any condition'"
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* UserApprovalNode Specific Settings */}
+                    {selectedNode.type === 'UserApprovalNode' && (
+                        <div className='space-y-4'>
+                            <p className='text-sm text-gray-500'>Pause for a human to approve or reject a step</p>
+
+                            <div className='space-y-2'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Name</label>
+                                <input
+                                    type="text"
+                                    className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm'
+                                    value={inputs.name || ''}
+                                    onChange={(e) => handleInputChange('name', e.target.value)}
+                                    placeholder="Name"
+                                />
+                            </div>
+
+                            <div className='space-y-2'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Message</label>
+                                <textarea
+                                    className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm min-h-[100px] resize-none'
+                                    value={inputs.message || ''}
+                                    onChange={(e) => handleInputChange('message', e.target.value)}
+                                    placeholder="Describe the message to show to the user"
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ApiNode Specific Settings */}
+                    {selectedNode.type === 'ApiNode' && (
+                        <div className='space-y-4'>
+                            <p className='text-sm text-gray-500'>Call an external API endpoint with your chosen method</p>
+
+                            <div className='space-y-2'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Name</label>
+                                <input
+                                    type="text"
+                                    className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm'
+                                    value={inputs.name || ''}
+                                    onChange={(e) => handleInputChange('name', e.target.value)}
+                                    placeholder='API Agent Name'
+                                />
+                            </div>
+
+                            <div className='space-y-2'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Request Method</label>
+                                <select
+                                    className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm'
+                                    value={inputs.method || 'GET'}
+                                    onChange={(e) => handleInputChange('method', e.target.value)}
+                                >
+                                    <option value="GET">GET</option>
+                                    <option value="POST">POST</option>
+                                    <option value="PUT">PUT</option>
+                                    <option value="DELETE">DELETE</option>
+                                </select>
+                            </div>
+
+                            <div className='space-y-2'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>API URL</label>
+                                <input
+                                    type="url"
+                                    className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm font-mono'
+                                    value={inputs.url || ''}
+                                    onChange={(e) => handleInputChange('url', e.target.value)}
+                                    placeholder='https://api.example.com/data'
+                                />
+                            </div>
+
+                            <div className='flex items-center justify-between'>
+                                <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Include API Key</label>
+                                <div
+                                    className={`w-10 h-6 flex items-center bg-gray-300 rounded-full p-1 cursor-pointer transition-colors ${inputs.includeApiKey ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-700'}`}
+                                    onClick={() => handleInputChange('includeApiKey', !inputs.includeApiKey)}
+                                >
+                                    <div className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${inputs.includeApiKey ? 'translate-x-4' : ''}`}></div>
+                                </div>
+                            </div>
+
+                            {inputs.includeApiKey && (
+                                <div className='space-y-2 animate-in fade-in slide-in-from-top-2 duration-200'>
+                                    <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>API Key</label>
+                                    <input
+                                        type="password"
+                                        className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm font-mono'
+                                        value={inputs.apiKey || ''}
+                                        onChange={(e) => handleInputChange('apiKey', e.target.value)}
+                                        placeholder='Enter API Key'
+                                    />
+                                </div>
+                            )}
+
+                            {inputs.method === 'POST' && (
+                                <div className='space-y-2 animate-in fade-in slide-in-from-top-2 duration-200'>
+                                    <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Body Parameters (JSON)</label>
+                                    <textarea
+                                        className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm min-h-[100px] font-mono'
+                                        value={inputs.bodyParams || ''}
+                                        onChange={(e) => handleInputChange('bodyParams', e.target.value)}
+                                        placeholder='{ "param1": "value1", "param2": "value2" }'
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Common Settings: Name & Instructions - HIDE for EndNode, IfElseNode, WhileNode, UserApprovalNode AND ApiNode */}
+                    {selectedNode.type !== 'EndNode' && selectedNode.type !== 'IfElseNode' && selectedNode.type !== 'WhileNode' && selectedNode.type !== 'UserApprovalNode' && selectedNode.type !== 'ApiNode' && (
                         <>
                             <div className='space-y-2'>
                                 <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Name</label>
@@ -87,35 +235,6 @@ function SettingPannel({ selectedNode, setNodes, onSave }: SettingPannelProps) {
                                     placeholder={`e.g., AI Trip Planner`}
                                 />
                             </div>
-
-                            {/* Node Specific Settings for API */}
-                            {selectedNode.type === 'ApiNode' && (
-                                <>
-                                    <div className='space-y-2'>
-                                        <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>API URL</label>
-                                        <input
-                                            type="url"
-                                            className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm font-mono'
-                                            value={inputs.url || ''}
-                                            onChange={(e) => handleInputChange('url', e.target.value)}
-                                            placeholder='https://api.example.com/v1/...'
-                                        />
-                                    </div>
-                                    <div className='space-y-2'>
-                                        <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>Method</label>
-                                        <select
-                                            className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm'
-                                            value={inputs.method || 'GET'}
-                                            onChange={(e) => handleInputChange('method', e.target.value)}
-                                        >
-                                            <option value="GET">GET</option>
-                                            <option value="POST">POST</option>
-                                            <option value="PUT">PUT</option>
-                                            <option value="DELETE">DELETE</option>
-                                        </select>
-                                    </div>
-                                </>
-                            )}
 
 
                             <div className='space-y-2'>
