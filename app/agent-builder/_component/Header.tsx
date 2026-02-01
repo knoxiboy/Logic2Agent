@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, Code2, Play, Share } from 'lucide-react'
+import { ChevronLeft, Play } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
@@ -18,11 +18,9 @@ function Header({ agentName, agentId }: HeaderProps) {
                 <h1 className='text-xl font-bold'>{agentName || 'Agent Name'}</h1>
             </div>
             <div>
-                <Button variant={'ghost'}> <Code2 /> Code </Button>
                 <Link href={`/agent-builder/${agentId}/preview`}>
                     <Button variant={'ghost'}> <Play /> Preview </Button>
                 </Link>
-                <Button variant={'ghost'}> <Share /> Publish </Button>
             </div>
         </div>
     )
