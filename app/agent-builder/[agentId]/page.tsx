@@ -87,6 +87,8 @@ function AgentBuilderContent() {
     }, []);
 
 
+    const { screenToFlowPosition, setViewport, fitView } = useReactFlow();
+
     useEffect(() => {
         if (agentData) {
             console.log("Hydrating Flow Data from DB:", agentData);
@@ -102,9 +104,13 @@ function AgentBuilderContent() {
             }
             // Specifically check if edges exist in DB (even if empty array) to avoid overwriting with initialEdges if DB has saved data
             if (agentData.edges !== undefined) setEdges(agentData.edges);
-        }
-    }, [agentData]);
 
+            // Set centered and appropriately zoomed view when agent is opened
+            setTimeout(() => {
+                fitView({ duration: 800, maxZoom: 0.6 });
+            }, 50);
+        }
+    }, [agentData, fitView]);
 
     const SaveNodesAndEdges = async () => {
         if (!agentData?._id) return;
@@ -134,7 +140,6 @@ function AgentBuilderContent() {
         (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
         [setEdges]
     );
-    const { screenToFlowPosition } = useReactFlow();
 
     const onConnect = useCallback(
         (params: any) => setEdges((eds) => {
@@ -216,7 +221,9 @@ function AgentBuilderContent() {
                             onDragOver={onDragOver}
                             onDrop={onDrop}
                             deleteKeyCode={['Backspace', 'Delete']}
-                            fitView
+                            defaultViewport={{ x: 0, y: 0, zoom: 0.6 }}
+                            minZoom={0.1}
+                            maxZoom={2}
                             colorMode='system'
                             nodeTypes={nodeTypes}
                         >
