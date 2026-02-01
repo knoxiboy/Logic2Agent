@@ -12,6 +12,12 @@ import IfElseNode from '../_component/IfElseNode';
 import WhileNode from '../_component/WhileNode';
 import UserApprovalNode from '../_component/UserApprovalNode';
 import ApiNode from '../_component/ApiNode';
+import NoteNode from '../_component/NoteNode';
+import FileSearchNode from '../_component/FileSearchNode';
+import GuardrailsNode from '../_component/GuardrailsNode';
+import MCPNode from '../_component/MCPNode';
+import TransformNode from '../_component/TransformNode';
+import SetStateNode from '../_component/SetStateNode';
 import ToolPanel from '../_component/ToolPanel';
 import SettingPannel from '../_component/SettingPannel';
 import { useParams } from 'next/navigation';
@@ -33,7 +39,13 @@ const nodeTypes = {
     IfElseNode: IfElseNode,
     WhileNode: WhileNode,
     UserApprovalNode: UserApprovalNode,
-    ApiNode: ApiNode
+    ApiNode: ApiNode,
+    NoteNode: NoteNode,
+    FileSearchNode: FileSearchNode,
+    GuardrailsNode: GuardrailsNode,
+    MCPNode: MCPNode,
+    TransformNode: TransformNode,
+    SetStateNode: SetStateNode
 };
 
 function AgentBuilderPage() {

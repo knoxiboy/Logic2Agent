@@ -24,6 +24,12 @@ import IfElseNode from '../../_component/IfElseNode';
 import WhileNode from '../../_component/WhileNode';
 import UserApprovalNode from '../../_component/UserApprovalNode';
 import ApiNode from '../../_component/ApiNode';
+import NoteNode from '../../_component/NoteNode';
+import FileSearchNode from '../../_component/FileSearchNode';
+import GuardrailsNode from '../../_component/GuardrailsNode';
+import MCPNode from '../../_component/MCPNode';
+import TransformNode from '../../_component/TransformNode';
+import SetStateNode from '../../_component/SetStateNode';
 import { PublishModal } from './_components/PublishModal';
 
 const nodeTypes = {
@@ -33,7 +39,13 @@ const nodeTypes = {
     IfElseNode,
     WhileNode,
     UserApprovalNode,
-    ApiNode
+    ApiNode,
+    NoteNode,
+    FileSearchNode,
+    GuardrailsNode,
+    MCPNode,
+    TransformNode,
+    SetStateNode
 };
 
 function PreviewAgent() {
