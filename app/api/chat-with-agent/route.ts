@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { groq } from "@/config/GroqModel";
-import { openai } from "@/config/OpenAiModel";
+import OpenAI from "openai";
 
 // 🧹 Fail-safe: Strip all reasoning tags from AI output
 function cleanResponse(text: string): string {
@@ -128,15 +128,33 @@ async function handleGroqChat(messages: any[], toolConfig: any) {
             if (originalTool) {
                 try {
                     let finalUrl = originalTool.url;
+                    console.log('🔧 Original URL:', originalTool.url);
+                    console.log('🔧 Tool Args:', args);
+
                     Object.keys(args).forEach(key => finalUrl = finalUrl.replace(`{${key}}`, encodeURIComponent(args[key])));
+                    console.log('🔧 URL after param replacement:', finalUrl);
+
                     if (originalTool.includeApiKey && originalTool.apiKey) {
                         const separator = finalUrl.includes('?') ? '&' : '?';
                         const paramName = originalTool.apiKeyParamName || 'key';
                         finalUrl += `${separator}${paramName}=${originalTool.apiKey}`;
+                        console.log('🔧 API Key added to URL');
+                    } else {
+                        console.log('⚠️ No API key configured! includeApiKey:', originalTool.includeApiKey, 'hasApiKey:', !!originalTool.apiKey);
                     }
+
+                    console.log('🌐 Final URL (key hidden):', finalUrl.replace(/key=[^&]+/, 'key=***'));
                     const apiResult = await fetch(finalUrl, { method: originalTool.method || 'GET' });
-                    if (!apiResult.ok) throw new Error(`API returned ${apiResult.status}`);
+                    console.log('📡 API Response Status:', apiResult.status);
+
+                    if (!apiResult.ok) {
+                        const errorText = await apiResult.text();
+                        console.error('❌ API Error Response:', errorText);
+                        throw new Error(`API returned ${apiResult.status}: ${errorText.substring(0, 100)}`);
+                    }
+
                     const resultData = await apiResult.json();
+                    console.log('✅ API Success:', Object.keys(resultData));
 
                     chatMessages.push({
                         tool_call_id: toolCall.id,
@@ -145,6 +163,7 @@ async function handleGroqChat(messages: any[], toolConfig: any) {
                         content: JSON.stringify(resultData),
                     } as any);
                 } catch (err: any) {
+                    console.error('❌ Tool Execution Error:', err.message);
                     chatMessages.push({
                         tool_call_id: toolCall.id,
                         role: "tool",
@@ -166,6 +185,9 @@ async function handleGroqChat(messages: any[], toolConfig: any) {
 
 // --- OpenAI Handler ---
 async function handleOpenAiChat(messages: any[], toolConfig: any) {
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
     const openAiTools = toolConfig.tools?.map((tool: any) => {
         const urlPlaceholders = tool.url.match(/\{([^}]+)\}/g)?.map((m: string) => m.slice(1, -1)) || [];
         const properties: any = {};

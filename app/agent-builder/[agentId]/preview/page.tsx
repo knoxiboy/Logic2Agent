@@ -96,7 +96,20 @@ function PreviewAgent() {
             const text = await result.text();
 
             if (!result.ok) {
-                const errData = text ? JSON.parse(text) : { error: 'Unknown Error' };
+                // Check if response is JSON before parsing
+                let errData: any = { error: 'Unknown Error' };
+                try {
+                    const contentType = result.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        errData = JSON.parse(text);
+                    } else {
+                        // HTML or other non-JSON response
+                        errData = { error: `Server Error (${result.status}): ${result.statusText}` };
+                        console.error('Non-JSON error response:', text.substring(0, 200));
+                    }
+                } catch (parseErr) {
+                    console.error('Failed to parse error response:', parseErr);
+                }
                 toast.error(`Reboot Failed: ${errData.error || result.statusText}`);
                 setIsRebooting(false);
                 return null;

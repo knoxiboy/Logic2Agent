@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { groq } from "@/config/GroqModel";
-import { openai } from "@/config/OpenAiModel";
+import OpenAI from "openai";
 
 const PROMPT = `
 You are an expert AI Agent Architect.
@@ -72,11 +72,15 @@ function safeParseJSON(text: string) {
 }
 
 export async function POST(req: Request) {
+    console.log("🚀 API Route Hit: /api/generate-agent-tool-config");
     try {
+        console.log("📥 Parsing request body...");
         const body = await req.json();
         const { jsonConfig } = body;
 
         console.log("📬 Config Request Body Received");
+        console.log("🔍 jsonConfig present:", !!jsonConfig);
+
         if (!jsonConfig) {
             console.error("❌ Missing jsonConfig in request body");
             return NextResponse.json({ error: "Missing jsonConfig" }, { status: 400 });
@@ -85,7 +89,12 @@ export async function POST(req: Request) {
         // 🚀 Primary: Attempt with Groq
         try {
             console.log("📥 Attempting Groq for config generation...");
-            if (!process.env.GROQ_API_KEY) throw new Error("Missing Groq API Key");
+            console.log("🔑 GROQ_API_KEY present:", !!process.env.GROQ_API_KEY);
+
+            if (!process.env.GROQ_API_KEY) {
+                console.error("❌ Missing Groq API Key");
+                throw new Error("Missing Groq API Key");
+            }
 
             const response = await groq.chat.completions.create({
                 model: "qwen/qwen3-32b",
@@ -108,30 +117,51 @@ export async function POST(req: Request) {
                 console.warn("⚠️ Groq Rate Limit reached. Falling back to OpenAI...");
 
                 if (!process.env.OPENAI_API_KEY) {
-                    throw new Error("Groq limit reached and OpenAI API Key is missing.");
+                    console.error("❌ OpenAI API Key is missing. Cannot fallback.");
+                    return NextResponse.json(
+                        { error: "Groq rate limit reached and OpenAI API Key is not configured. Please add OPENAI_API_KEY to your .env file or wait for Groq rate limit to reset." },
+                        { status: 503 }
+                    );
                 }
 
-                const response = await openai.chat.completions.create({
-                    model: "gpt-4o-mini",
-                    messages: [
-                        { role: "system", content: PROMPT },
-                        { role: "user", content: JSON.stringify(jsonConfig) }
-                    ],
-                    response_format: { type: "json_object" }
-                });
+                try {
+                    const openai = new OpenAI({
+                        apiKey: process.env.OPENAI_API_KEY,
+                    });
 
-                const outputText = response.choices[0].message.content || "{}";
-                console.log("✅ OpenAI RAW Output:", outputText);
+                    const response = await openai.chat.completions.create({
+                        model: "gpt-4o-mini",
+                        messages: [
+                            { role: "system", content: PROMPT },
+                            { role: "user", content: JSON.stringify(jsonConfig) }
+                        ],
+                        response_format: { type: "json_object" }
+                    });
 
-                const parsedData = safeParseJSON(outputText);
+                    const outputText = response.choices[0].message.content || "{}";
+                    console.log("✅ OpenAI RAW Output:", outputText);
 
-                return NextResponse.json({
-                    ...parsedData,
-                    _fallback: true,
-                    _fallback_reason: "Groq Rate Limit (OpenAI Fallback)"
-                });
+                    const parsedData = safeParseJSON(outputText);
+
+                    return NextResponse.json({
+                        ...parsedData,
+                        _fallback: true,
+                        _fallback_reason: "Groq Rate Limit (OpenAI Fallback)"
+                    });
+                } catch (openaiError: any) {
+                    console.error("❌ OpenAI Fallback Error:", openaiError);
+                    return NextResponse.json(
+                        { error: `OpenAI fallback failed: ${openaiError.message}` },
+                        { status: 500 }
+                    );
+                }
             }
-            throw groqError; // Re-throw if not a rate limit error
+            // Re-throw if not a rate limit error
+            console.error("❌ Groq Error (non-rate-limit):", groqError);
+            return NextResponse.json(
+                { error: `Groq API Error: ${groqError.message || 'Unknown error'}` },
+                { status: 500 }
+            );
         }
 
     } catch (error: any) {
