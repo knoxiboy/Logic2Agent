@@ -123,7 +123,8 @@ export async function POST(req: Request) {
                         // Add API Key if needed
                         if (originalTool.includeApiKey && originalTool.apiKey) {
                             const separator = finalUrl.includes('?') ? '&' : '?';
-                            finalUrl += `${separator}key=${originalTool.apiKey}`;
+                            const paramName = originalTool.apiKeyParamName || 'key';
+                            finalUrl += `${separator}${paramName}=${originalTool.apiKey}`;
                         }
 
                         console.log("🔗 Full Request URL:", finalUrl);
@@ -131,6 +132,11 @@ export async function POST(req: Request) {
                         const apiResult = await fetch(finalUrl, {
                             method: originalTool.method || 'GET'
                         });
+
+                        if (!apiResult.ok) {
+                            const errorText = await apiResult.text();
+                            throw new Error(`API returned ${apiResult.status}: ${errorText.slice(0, 100)}`);
+                        }
 
                         const resultData = await apiResult.json();
                         console.log("✅ API Success Data received");

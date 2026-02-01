@@ -40,6 +40,7 @@ You MUST output a single valid JSON object with the EXACT following structure:
       "method": "Look at settings.method",
       "includeApiKey": true,
       "apiKey": "Look at settings.apiKey",
+      "apiKeyParamName": "Look at settings.apiKeyParamName or default to 'key'",
       "assignedAgent": "Name of agent using it",
       "parameters": { "param": "type" },
       "usage": []

@@ -196,15 +196,27 @@ function SettingPannel({ selectedNode, setNodes, onSave, agentName }: SettingPan
                             </div>
 
                             {inputs.includeApiKey && (
-                                <div className='space-y-2 animate-in fade-in slide-in-from-top-2 duration-200'>
-                                    <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>API Key</label>
-                                    <input
-                                        type="password"
-                                        className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm font-mono'
-                                        value={inputs.apiKey || ''}
-                                        onChange={(e) => handleInputChange('apiKey', e.target.value)}
-                                        placeholder='Enter API Key'
-                                    />
+                                <div className='space-y-4 animate-in fade-in slide-in-from-top-2 duration-200'>
+                                    <div className='space-y-2'>
+                                        <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>API Key Parameter Name</label>
+                                        <input
+                                            type="text"
+                                            className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm font-mono'
+                                            value={inputs.apiKeyParamName || 'key'}
+                                            onChange={(e) => handleInputChange('apiKeyParamName', e.target.value)}
+                                            placeholder='e.g., key, appid, token'
+                                        />
+                                    </div>
+                                    <div className='space-y-2'>
+                                        <label className='text-sm font-semibold text-gray-700 dark:text-gray-300'>API Key Value</label>
+                                        <input
+                                            type="password"
+                                            className='w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm font-mono'
+                                            value={inputs.apiKey || ''}
+                                            onChange={(e) => handleInputChange('apiKey', e.target.value)}
+                                            placeholder='Enter API Key'
+                                        />
+                                    </div>
                                 </div>
                             )}
 
