@@ -139,6 +139,11 @@ Logic2Agent addresses these challenges by providing a no-code solution that empo
 ### Database
 - **Convex Database**: Real-time document database with reactive queries
 
+### SDLC, Security & Integration Strategies
+- **Arcjet & Middleware Defenses**: Basic API in-memory rate limiting supplemented by Clerk authentication for broad scale Next.js routing protection.
+- **Workflow Security via React Flow**: Deterministic prompt compilation preventing injection via constrained Node creation interfaces.
+- **Data Parity**: Isolated Convex test instances ensure functional equivalence between Development, Staging, and Production deployments.
+
 ### Development Tools
 - **ESLint**: Code linting
 - **PostCSS**: CSS processing
